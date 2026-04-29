@@ -1,11 +1,6 @@
 import type { CalculationResult } from "@/core/types";
 import { formatCop } from "./format";
-import {
-  extrasRowsClientPesos,
-  getClientQuoteTotals,
-  laborRowsClientPesos,
-  materialRowsClientPesos,
-} from "./clientQuote";
+import { getClientQuoteTotals, laborRowsClientPesos, materialRowsClientPesos } from "./clientQuote";
 
 function lineSection(
   title: string,
@@ -34,16 +29,12 @@ export function buildQuoteText(params: {
         ? `Calculadora: ${itemLines[0]}`
         : `Ítems en cotización:\n${itemLines.map((l, i) => `  ${i + 1}. ${l}`).join("\n")}`;
 
-  const {
-    materialsRounded,
-    extrasRounded,
-    laborWithMarginRounded,
-    totalRounded,
-  } = getClientQuoteTotals(result.totals);
+  const { materialsRounded, laborWithMarginRounded, totalRounded } = getClientQuoteTotals(
+    result.totals,
+  );
 
   const mats = materialRowsClientPesos(result.materials, materialsRounded);
   const labs = laborRowsClientPesos(result.labor, laborWithMarginRounded);
-  const exs = extrasRowsClientPesos(result.extras, extrasRounded);
 
   const matLines =
     mats.length > 0
@@ -64,11 +55,6 @@ export function buildQuoteText(params: {
         }))
       : [{ label: "Mano de obra (precio cotizado)", value: formatCop(laborWithMarginRounded) }];
 
-  const exLines = exs.map((e) => ({
-    label: e.name,
-    value: formatCop(e.subtotal),
-  }));
-
   const parts: string[] = [
     `*ConstruYa — Cotización*`,
     ``,
@@ -82,14 +68,10 @@ export function buildQuoteText(params: {
     ``,
     lineSection("Mano de obra (precio cotizado)", labLines),
   ];
-  if (exLines.length > 0) {
-    parts.push(``, lineSection("Otros / extras", exLines));
-  }
   parts.push(
     ``,
     `Subtotal materiales: ${formatCop(materialsRounded)}`,
     `Subtotal mano de obra: ${formatCop(laborWithMarginRounded)}`,
-    ...(extrasRounded !== 0 ? [`Otros / extras: ${formatCop(extrasRounded)}`] : []),
     ``,
     `*TOTAL: ${formatCop(totalRounded)}*`,
     ``,

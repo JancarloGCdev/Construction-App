@@ -9,7 +9,6 @@ export const priceCatalogSchema: z.ZodType<PriceCatalog> = z.object({
   balastoM3: z.coerce.number().min(0),
   block: z.coerce.number().min(0),
   steelKg: z.coerce.number().min(0),
-  laborDay: z.coerce.number().min(0),
   laborM2Concrete: z.coerce.number().min(0),
   laborM2BlockWall: z.coerce.number().min(0),
   stuccoSaco25kg: z.coerce.number().min(0),

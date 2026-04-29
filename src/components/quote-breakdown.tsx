@@ -1,10 +1,5 @@
 import type { CalculationResult } from "@/core/types";
-import {
-  extrasRowsClientPesos,
-  getClientQuoteTotals,
-  laborRowsClientPesos,
-  materialRowsClientPesos,
-} from "@/lib/clientQuote";
+import { getClientQuoteTotals, laborRowsClientPesos, materialRowsClientPesos } from "@/lib/clientQuote";
 import { formatCop } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -17,16 +12,11 @@ type QuoteBreakdownProps = {
  * (factor comercial dentro de «mano de obra»).
  */
 export function QuoteBreakdown({ result }: QuoteBreakdownProps) {
-  const {
-    materialsRounded,
-    extrasRounded,
-    laborWithMarginRounded,
-    totalRounded,
-  } = getClientQuoteTotals(result.totals);
+  const { materialsRounded, laborWithMarginRounded, totalRounded } = getClientQuoteTotals(
+    result.totals,
+  );
   const materials = materialRowsClientPesos(result.materials, materialsRounded);
   const labor = laborRowsClientPesos(result.labor, laborWithMarginRounded);
-  const extras = extrasRowsClientPesos(result.extras, extrasRounded);
-  const hasExtras = extras.length > 0;
 
   return (
     <div className="space-y-4">
@@ -83,24 +73,6 @@ export function QuoteBreakdown({ result }: QuoteBreakdownProps) {
           </div>
         </CardContent>
       </Card>
-      {hasExtras ? (
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Extras</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
-            {extras.map((e) => (
-              <div
-                key={e.name}
-                className="flex justify-between gap-3 border-b border-border/50 pb-2 last:border-0"
-              >
-                <span className="text-muted-foreground">{e.name}</span>
-                <span className="font-medium tabular-nums">{formatCop(e.subtotal)}</span>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      ) : null}
       <Card className="border border-border/90 bg-gradient-to-b from-card to-muted/30 shadow-sm">
         <CardContent className="pt-5 space-y-2 text-sm">
           <div className="flex justify-between text-lg font-bold pt-1 border-t border-border/80">
@@ -108,7 +80,7 @@ export function QuoteBreakdown({ result }: QuoteBreakdownProps) {
             <span className="tabular-nums text-foreground tracking-tight">{formatCop(totalRounded)}</span>
           </div>
           <p className="text-xs text-muted-foreground pt-1">
-            Total = materiales + mano de obra (incluye factor cotizado){hasExtras ? " + extras" : ""}. Sin desglose de
+            Total = materiales + mano de obra (incluye factor cotizado). Sin desglose de
             margen en esta vista.
           </p>
         </CardContent>

@@ -4,7 +4,6 @@ import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { CalculationResult } from "@/core/types";
 import { formatCop } from "@/lib/format";
 import {
-  extrasRowsClientPesos,
   getClientQuoteTotals,
   laborRowsClientPesos,
   materialRowsClientPesos,
@@ -69,15 +68,11 @@ export function QuotePdfDocument({
   result,
   generatedAt,
 }: QuotePdfDocumentProps) {
-  const { materialsRounded, extrasRounded, laborWithMarginRounded, totalRounded } =
-    getClientQuoteTotals(result.totals);
-  const materials = materialRowsClientPesos(
-    result.materials,
-    materialsRounded,
+  const { materialsRounded, laborWithMarginRounded, totalRounded } = getClientQuoteTotals(
+    result.totals,
   );
+  const materials = materialRowsClientPesos(result.materials, materialsRounded);
   const labor = laborRowsClientPesos(result.labor, laborWithMarginRounded);
-  const extras = extrasRowsClientPesos(result.extras, extrasRounded);
-  const hasExtrasRows = extras.length > 0;
 
   return (
     <Document>
@@ -136,27 +131,6 @@ export function QuotePdfDocument({
           ))}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Otros / extras</Text>
-          {hasExtrasRows ? (
-            extras.map((e, i) => (
-              <View
-                key={`${e.name}-${i}`}
-                style={i % 2 === 1 ? [styles.row, styles.rowAlt] : styles.row}
-              >
-                <Text style={styles.colMain}>{e.name}</Text>
-                <Text style={styles.colSub}>{formatCop(e.subtotal)}</Text>
-              </View>
-            ))
-          ) : (
-            <Text style={[styles.small, { paddingVertical: 4 }]}>
-              {(extrasRounded !== 0
-                ? `Total otros: ${formatCop(extrasRounded)}`
-                : "(Sin otros ítems en este formato)")}
-            </Text>
-          )}
-        </View>
-
         <View style={styles.totals}>
           <View style={styles.totalRow}>
             <Text>Subtotal materiales</Text>
@@ -166,12 +140,6 @@ export function QuotePdfDocument({
             <Text>Subtotal mano de obra</Text>
             <Text>{formatCop(laborWithMarginRounded)}</Text>
           </View>
-          {extrasRounded !== 0 ? (
-            <View style={styles.totalRow}>
-              <Text>Otros / extras</Text>
-              <Text>{formatCop(extrasRounded)}</Text>
-            </View>
-          ) : null}
           <View style={[styles.totalRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: c.brand }]}>
             <Text style={styles.totalBig}>TOTAL</Text>
             <Text style={styles.totalBig}>{formatCop(totalRounded)}</Text>
@@ -185,4 +153,4 @@ export function QuotePdfDocument({
     </Document>
   );
 }
-
+

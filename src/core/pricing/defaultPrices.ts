@@ -12,7 +12,6 @@ export const defaultPrices: PriceCatalog = {
   balastoM3: 103_000,
   block: 1_200,
   steelKg: 4_200,
-  laborDay: 150_000,
   laborM2Concrete: 45_000,
   laborM2BlockWall: 38_000,
   stuccoSaco25kg: 32_000,

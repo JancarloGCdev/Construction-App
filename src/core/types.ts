@@ -4,7 +4,6 @@ export type PriceCatalog = {
   gravelM3: number;
   block: number;
   steelKg: number;
-  laborDay: number;
   laborM2Concrete: number;
   laborM2BlockWall: number;
   /** COP por saco de estuco (25 kg) */

@@ -78,17 +78,3 @@ export function laborRowsClientPesos(
   }));
 }
 
-export function extrasRowsClientPesos(
-  extras: CalculationResult["extras"],
-  extrasTargetRounded: number
-): { name: string; subtotal: number }[] {
-  if (extras.length === 0) return [];
-  const alloc = allocateRoundedSubtotals(
-    extras.map((e) => ({ subtotal: e.subtotal })),
-    extrasTargetRounded
-  );
-  return extras.map((e, i) => ({
-    ...e,
-    subtotal: alloc[i] ?? Math.round(e.subtotal),
-  }));
-}
