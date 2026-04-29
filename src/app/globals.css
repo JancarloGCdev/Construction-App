@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Fondo cálido suave, sin blanco puro; naranja solo como acento (botones, foco) */
+    --background: 40 9% 94%;
+    --foreground: 220 18% 14%;
+    --card: 40 10% 98%;
+    --card-foreground: 220 18% 14%;
+    --popover: 40 10% 99%;
+    --popover-foreground: 220 18% 14%;
+    --primary: 22 78% 44%;
+    --primary-foreground: 0 0% 99%;
+    --secondary: 220 10% 91%;
+    --secondary-foreground: 220 20% 18%;
+    --muted: 40 6% 92%;
+    --muted-foreground: 220 8% 40%;
+    /* Acento frío: hovers, iconos, chips — no naranja */
+    --accent: 215 22% 92%;
+    --accent-foreground: 215 35% 28%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 99%;
+    --border: 40 8% 86%;
+    --input: 40 6% 90%;
+    --ring: 22 60% 42%;
+    --radius: 0.9rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 24 20% 18%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 24 100% 50%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-foreground min-h-dvh antialiased;
+    background-color: hsl(var(--background));
+    /* Ligera transición a un tono más apagado hacia abajo, menos fatiga */
+    background-image: linear-gradient(
+      180deg,
+      hsl(var(--background)) 0%,
+      hsl(220 10% 91%) 100%
+    );
+  }
+}
